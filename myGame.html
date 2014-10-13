@@ -1,0 +1,131 @@
+<!DOCTYPEhtml>
+<html>
+<head>
+<link rel="icon" href="favicon.jpg">
+<title>MemoryGaME</title>
+	<style>
+	body {
+		background-color:#123456;
+	}
+		div#memBoard{
+			background: #ccc;
+			width:800px;
+			height: 400px;
+			padding: 24px;
+			margin:0px auto;
+			border:#999 2px solid ;
+			font-size: 100px;
+		}
+		div#memBoard>div{
+			background-color:#000000;
+			border:#000 1px solid;
+			width:71px;
+			height:71px;
+			float:left;
+			margin:10px;
+			padding:20px;
+			font-size:64px;
+			cursor:pointer;
+			text-align:center;
+		}
+		div#button{
+			background: #000000;
+			color:#ffffff;
+			width:800px;
+			height: 50px;
+			padding: 24px;
+			margin:0px auto;
+			border:#999 2px solid ;
+			cursor:pointer;
+		}
+	</style>
+	<script type="text/javascript">
+	 
+		var cardArray=['A','A','B','B','C','C','D','D','E','E','F','F','G','G','H','H','T','T'];
+		var cardValues=[];
+		var cardId=[];
+		var time;
+		var countdown;
+		
+		 Array.prototype.arrayShuffle = function() {
+			var count = this.length;
+			while(--count>0){
+				var count2 = Math.floor(Math.random()*(count+1));
+				var temp = this[count2];
+				this[count2]=this[count];
+				this[count]=temp;
+			}
+		} 
+			function countDown(){
+ 			time=time-1;
+
+ 			document.getElementById("timeCount").innerHTML = time;
+ 			 countdown= setTimeout(countDown,900);
+ 			if(time==0){
+ 				alert("Pump NOx to Grey and Try Again");
+ 				clearTimeout(countdown);
+ 			}
+ 			}
+		
+		function newBoard(){
+			time=30;
+			clearTimeout(countdown);
+			countDown();
+			layCards='';
+			cardArray.arrayShuffle();
+			var bound = cardArray.length;
+			for(var count=0;count<bound;count++){
+				
+				layCards +='<div id="card_'+count+'" onclick="flipCard(this,\''+cardArray[count]+'\');"></div>';
+			}
+			document.getElementById("memBoard").innerHTML=layCards;
+		}
+
+		
+		function flipCard(card,value){
+
+
+			if(card.innerHTML=="" && cardValues.length<2){
+				card.style.background='#666';
+				card.innerHTML=value;
+				if(cardValues.length==0){
+					cardValues.push(value);
+					cardId.push(card.id);
+					}
+					else if(cardValues.length==1){
+						cardValues.push(value);
+						cardId.push(card.id);
+						if(cardValues[0]==cardValues[1]){
+						cardValues=[];
+						cardId=[];
+						}
+					
+						else{
+							function flipBack(){
+								var flippedCard_1=document.getElementById(cardId[0]);
+								var flippedCard_2=document.getElementById(cardId[1]);
+								flippedCard_1.style.background='#000000';
+								flippedCard_2.style.background='#000000';
+								flippedCard_1.innerHTML="";
+								flippedCard_2.innerHTML="";
+								cardValues=[];
+								cardId=[];
+							}
+							setTimeout(flipBack,500);
+						
+						}
+			}
+			}
+			}
+		
+	</script>
+</head>
+<body>
+	<div id="memBoard"><center>Match The Letters!!! Click on New Game to Start.</center>
+	</div>
+	<div id="button" onclick="newBoard();"><center>New Game</center>
+		<div id="timeCount">TIME</div>	
+    </div>div
+	
+</body>
+</html>
